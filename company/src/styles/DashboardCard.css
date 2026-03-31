@@ -1,0 +1,114 @@
+/* Dashboard Stats Card Styling */
+.dashboard-card {
+  background: white;
+  border-radius: 10px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  transition: var(--transition);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-icon {
+  font-size: 40px;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-card.blue .card-icon {
+  background-color: #dbeafe;
+  color: #0284c7;
+}
+
+.dashboard-card.green .card-icon {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+.dashboard-card.purple .card-icon {
+  background-color: #e9d5ff;
+  color: #9333ea;
+}
+
+.dashboard-card.orange .card-icon {
+  background-color: #fed7aa;
+  color: #ea580c;
+}
+
+.dashboard-card.teal .card-icon {
+  background-color: #ccfbf1;
+  color: #0d9488;
+}
+
+.dashboard-card.gold .card-icon {
+  background-color: #fef08a;
+  color: #eab308;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-title {
+  font-size: 13px;
+  color: var(--secondary-color);
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--dark-text);
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .card-icon {
+    font-size: 32px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .card-value {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 16px;
+  }
+
+  .card-icon {
+    font-size: 28px;
+    width: 45px;
+    height: 45px;
+  }
+
+  .card-value {
+    font-size: 20px;
+  }
+
+  .card-title {
+    font-size: 11px;
+  }
+}
