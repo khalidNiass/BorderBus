@@ -9,6 +9,8 @@ import SeatSelection from './pages/SeatSelection'
 import BookingPayment from './pages/BookingPayment'
 import BusDetail from './pages/BusDetail'
 import CompanyProfile from './pages/CompanyProfile'
+import RoutesPage from './pages/RoutesPage'
+import OperatorsPage from './pages/OperatorsPage'
 import TicketPage from './pages/TicketPage'
 import MyBookings from './pages/MyBookings'
 import ProfilePage from './pages/ProfilePage'
@@ -20,6 +22,8 @@ const pageTitles = {
   '/': 'Home',
   '/search': 'Search Trips',
   '/results': 'Search Results',
+  '/routes': 'Routes',
+  '/operators': 'Operators',
   '/seats': 'Seat Selection',
   '/booking': 'Booking & Payment',
   '/ticket': 'Ticket',
@@ -30,17 +34,25 @@ const pageTitles = {
 }
 
 function App() {
-  const [theme, setTheme] = useState('dark')
+  const [theme, setTheme] = useState(() => {
+    const stored = window.localStorage.getItem('borderbus.theme')
+    return stored === 'light' || stored === 'dark' ? stored : 'dark'
+  })
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const location = useLocation()
 
   const title = useMemo(() => pageTitles[location.pathname] || 'BorderBus', [
     location.pathname,
   ])
-  const showBack = location.pathname.startsWith('/company/') || location.pathname.startsWith('/bus/')
+  const showBack =
+    location.pathname.startsWith('/company/') ||
+    location.pathname.startsWith('/bus/') ||
+    location.pathname === '/routes' ||
+    location.pathname === '/operators'
 
   useEffect(() => {
     document.body.dataset.theme = theme
+    window.localStorage.setItem('borderbus.theme', theme)
   }, [theme])
 
   const toggleTheme = () => {
@@ -74,6 +86,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<SearchTrips />} />
           <Route path="/results" element={<SearchResults />} />
+          <Route path="/routes" element={<RoutesPage />} />
+          <Route path="/operators" element={<OperatorsPage />} />
           <Route path="/bus/:id" element={<BusDetail />} />
           <Route path="/company/:id" element={<CompanyProfile />} />
           <Route path="/seats" element={<SeatSelection />} />

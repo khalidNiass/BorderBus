@@ -1,9 +1,21 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import BusCard from '../components/BusCard'
 import Filters from '../components/Filters'
 import { buses as busResults } from '../data/mockData'
 
 function SearchResults() {
+  const location = useLocation()
+  const searchInput = useMemo(() => {
+    const params = new URLSearchParams(location.search)
+    const state = location.state || {}
+    return {
+      from: String(state.from || params.get('from') || ''),
+      to: String(state.to || params.get('to') || ''),
+      date: String(state.date || params.get('date') || ''),
+    }
+  }, [location.search, location.state])
+
   const [filters, setFilters] = useState({
     price: 60,
     time: 'any',
@@ -12,6 +24,9 @@ function SearchResults() {
   })
 
   const filtered = useMemo(() => {
+    const normalizedFrom = searchInput.from.trim().toLowerCase()
+    const normalizedTo = searchInput.to.trim().toLowerCase()
+
     const matchesTime = (time) => {
       if (filters.time === 'any') return true
       const [hours] = time.split(':').map(Number)
@@ -22,10 +37,19 @@ function SearchResults() {
     }
 
     return busResults
+      .filter((bus) => {
+        if (normalizedFrom && !bus.from.toLowerCase().includes(normalizedFrom)) {
+          return false
+        }
+        if (normalizedTo && !bus.to.toLowerCase().includes(normalizedTo)) {
+          return false
+        }
+        return true
+      })
       .filter((bus) => bus.price <= Number(filters.price))
       .filter((bus) => (filters.type === 'any' ? true : bus.type === filters.type))
       .filter((bus) => matchesTime(bus.depart))
-  }, [filters])
+  }, [filters, searchInput.from, searchInput.to])
 
   const [sorted, setSorted] = useState(filtered)
 
@@ -58,7 +82,10 @@ function SearchResults() {
       <header className="page-header">
         <h1>Search Results</h1>
         <p className="muted">
-          Showing {sorted.length} buses for Dakar → Banjul
+          Showing {sorted.length} buses
+          {searchInput.from || searchInput.to
+            ? ` for ${searchInput.from || 'Any'} → ${searchInput.to || 'Any'}`
+            : ''}
         </p>
       </header>
 

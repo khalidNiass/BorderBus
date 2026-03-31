@@ -5,6 +5,14 @@ function ProfilePage() {
     name: 'Khalid Niass',
     email: 'khalid@email.com',
     initials: 'KN',
+    phone: '+221 555 0101',
+    location: 'Dakar, Senegal',
+    birthdate: '1995-06-14',
+    stats: {
+      trips: 18,
+      upcoming: 2,
+      points: '2,140',
+    },
   }
 
   return (
