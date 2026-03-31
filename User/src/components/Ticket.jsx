@@ -1,40 +1,63 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import QRCode from 'qrcode'
 import { FaDownload, FaShareAlt, FaCalendarAlt, FaPhoneAlt } from 'react-icons/fa'
 
 function Ticket({ booking }) {
   const [qrDataUrl, setQrDataUrl] = useState('')
+  const safeBooking = useMemo(() => {
+    return {
+      id: booking?.id || '—',
+      ticketId: booking?.ticketId || booking?.id || '—',
+      name: booking?.name || '—',
+      from: booking?.from || '—',
+      to: booking?.to || '—',
+      dateTime: booking?.dateTime || '—',
+      seats: Array.isArray(booking?.seats) ? booking.seats : [],
+      company: booking?.company || '—',
+      busType: booking?.busType || '—',
+      terminal: booking?.terminal || '—',
+      gate: booking?.gate || '—',
+      paymentStatus: booking?.paymentStatus || 'Pending',
+      amount: Number.isFinite(booking?.amount) ? booking.amount : 0,
+      policy: booking?.policy || '—',
+      support: booking?.support || '',
+    }
+  }, [booking])
 
   useEffect(() => {
+    if (!QRCode?.toDataURL) {
+      setQrDataUrl('')
+      return
+    }
     const payload = JSON.stringify({
-      ticketId: booking.ticketId || booking.id,
-      bookingId: booking.id,
-      name: booking.name,
-      from: booking.from,
-      to: booking.to,
-      dateTime: booking.dateTime,
-      seats: booking.seats,
+      ticketId: safeBooking.ticketId,
+      bookingId: safeBooking.id,
+      name: safeBooking.name,
+      from: safeBooking.from,
+      to: safeBooking.to,
+      dateTime: safeBooking.dateTime,
+      seats: safeBooking.seats,
     })
     QRCode.toDataURL(payload, { margin: 1, width: 160 })
       .then((url) => setQrDataUrl(url))
       .catch(() => setQrDataUrl(''))
-  }, [booking])
+  }, [safeBooking])
 
   const handleDownload = () => {
     const content = [
       `BorderBus Ticket`,
-      `Booking ID: ${booking.id}`,
-      `Ticket ID: ${booking.ticketId}`,
-      `Passenger: ${booking.name}`,
-      `Route: ${booking.from} → ${booking.to}`,
-      `Date & Time: ${booking.dateTime}`,
-      `Seats: ${booking.seats.join(', ')}`,
-      `Operator: ${booking.company}`,
-      `Bus Type: ${booking.busType}`,
-      `Terminal: ${booking.terminal}`,
-      `Gate: ${booking.gate}`,
-      `Amount: $${booking.amount}`,
-      `Payment Status: ${booking.paymentStatus}`,
+      `Booking ID: ${safeBooking.id}`,
+      `Ticket ID: ${safeBooking.ticketId}`,
+      `Passenger: ${safeBooking.name}`,
+      `Route: ${safeBooking.from} → ${safeBooking.to}`,
+      `Date & Time: ${safeBooking.dateTime}`,
+      `Seats: ${safeBooking.seats.join(', ') || '—'}`,
+      `Operator: ${safeBooking.company}`,
+      `Bus Type: ${safeBooking.busType}`,
+      `Terminal: ${safeBooking.terminal}`,
+      `Gate: ${safeBooking.gate}`,
+      `Amount: $${safeBooking.amount}`,
+      `Payment Status: ${safeBooking.paymentStatus}`,
     ].join('\n')
     const blob = new Blob([content], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
@@ -46,7 +69,7 @@ function Ticket({ booking }) {
   }
 
   const handleShare = async () => {
-    const shareText = `BorderBus Ticket ${booking.ticketId || booking.id}: ${booking.from} → ${booking.to} on ${booking.dateTime}. Seats ${booking.seats.join(', ')}.`
+    const shareText = `BorderBus Ticket ${safeBooking.ticketId}: ${safeBooking.from} → ${safeBooking.to} on ${safeBooking.dateTime}. Seats ${safeBooking.seats.join(', ') || '—'}.`
     if (navigator.share) {
       try {
         await navigator.share({
@@ -63,7 +86,7 @@ function Ticket({ booking }) {
   }
 
   const handleAddCalendar = () => {
-    const [datePart, timePart] = booking.dateTime.split('·').map((part) => part.trim())
+    const [datePart, timePart] = safeBooking.dateTime.split('·').map((part) => part.trim())
     const startDate = new Date(`${datePart} ${timePart}`)
     const endDate = new Date(startDate.getTime() + 60 * 60 * 1000)
     const format = (date) =>
@@ -72,7 +95,7 @@ function Ticket({ booking }) {
         .replace(/[-:]/g, '')
         .split('.')[0] + 'Z'
     const details = encodeURIComponent(
-      `${booking.company} ${booking.from} → ${booking.to}. Seats: ${booking.seats.join(', ')}.`,
+      `${safeBooking.company} ${safeBooking.from} → ${safeBooking.to}. Seats: ${safeBooking.seats.join(', ') || '—'}.`,
     )
     const ics = [
       'BEGIN:VCALENDAR',
@@ -80,9 +103,9 @@ function Ticket({ booking }) {
       'BEGIN:VEVENT',
       `DTSTART:${format(startDate)}`,
       `DTEND:${format(endDate)}`,
-      `SUMMARY:${booking.from} → ${booking.to}`,
+      `SUMMARY:${safeBooking.from} → ${safeBooking.to}`,
       `DESCRIPTION:${details}`,
-      `LOCATION:${booking.terminal}`,
+      `LOCATION:${safeBooking.terminal}`,
       'END:VEVENT',
       'END:VCALENDAR',
     ].join('\n')
@@ -96,7 +119,8 @@ function Ticket({ booking }) {
   }
 
   const handleCallSupport = () => {
-    window.location.href = `tel:${booking.support.replace(/\s/g, '')}`
+    if (!safeBooking.support) return
+    window.location.href = `tel:${safeBooking.support.replace(/\s/g, '')}`
   }
 
   return (
@@ -104,8 +128,8 @@ function Ticket({ booking }) {
       <div className="ticket-header">
         <div>
           <p className="muted">Booking ID</p>
-          <h3>{booking.id}</h3>
-          <p className="muted">Ticket #{booking.ticketId}</p>
+          <h3>{safeBooking.id}</h3>
+          <p className="muted">Ticket #{safeBooking.ticketId}</p>
         </div>
         <div className="qr">
           {qrDataUrl ? (
@@ -113,47 +137,47 @@ function Ticket({ booking }) {
           ) : (
             <span>QR</span>
           )}
-          <small>{booking.ticketId}</small>
+          <small>{safeBooking.ticketId}</small>
         </div>
       </div>
       <div className="ticket-status">
-        <span className="status upcoming">{booking.paymentStatus}</span>
-        <span className="muted">Amount: ${booking.amount}</span>
+        <span className="status upcoming">{safeBooking.paymentStatus}</span>
+        <span className="muted">Amount: ${safeBooking.amount}</span>
       </div>
       <div className="ticket-body">
         <div>
           <p className="label">Passenger</p>
-          <p>{booking.name}</p>
+          <p>{safeBooking.name}</p>
         </div>
         <div>
           <p className="label">Route</p>
           <p>
-            {booking.from} → {booking.to}
+            {safeBooking.from} → {safeBooking.to}
           </p>
         </div>
         <div>
           <p className="label">Date & Time</p>
-          <p>{booking.dateTime}</p>
+          <p>{safeBooking.dateTime}</p>
         </div>
         <div>
           <p className="label">Seat(s)</p>
-          <p>{booking.seats.join(', ')}</p>
+          <p>{safeBooking.seats.join(', ') || '—'}</p>
         </div>
         <div>
           <p className="label">Operator</p>
-          <p>{booking.company}</p>
+          <p>{safeBooking.company}</p>
         </div>
         <div>
           <p className="label">Bus Type</p>
-          <p>{booking.busType}</p>
+          <p>{safeBooking.busType}</p>
         </div>
         <div>
           <p className="label">Terminal</p>
-          <p>{booking.terminal}</p>
+          <p>{safeBooking.terminal}</p>
         </div>
         <div>
           <p className="label">Gate</p>
-          <p>{booking.gate}</p>
+          <p>{safeBooking.gate}</p>
         </div>
       </div>
       <div className="ticket-note">
@@ -165,11 +189,15 @@ function Ticket({ booking }) {
       </div>
       <div className="ticket-note">
         <p className="label">Cancellation Policy</p>
-        <p className="muted">{booking.policy}</p>
+        <p className="muted">{safeBooking.policy}</p>
       </div>
       <div className="ticket-note">
         <p className="label">Support</p>
-        <p className="muted">Call {booking.support} for assistance.</p>
+        <p className="muted">
+          {safeBooking.support
+            ? `Call ${safeBooking.support} for assistance.`
+            : 'Support contact unavailable.'}
+        </p>
       </div>
       <div className="ticket-actions">
         <button className="ghost-button" onClick={handleDownload}>
