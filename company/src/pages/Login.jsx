@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { FaBus } from 'react-icons/fa';
 import '../styles/AuthPages.css';
 
 const Login = () => {
@@ -41,7 +42,7 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-box">
         <div className="auth-header">
-          <h1>🚌 BorderBus Admin</h1>
+          <h1><FaBus className="header-icon" /> BorderBus Admin</h1>
           <p>Company Dashboard Login</p>
         </div>
 

@@ -1,14 +1,18 @@
 /**
  * Main App Component
  * Sets up routing and global providers for the company dashboard
+ * Admin-only app with conditional rendering support
  */
 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
+
+// Admin Components
+import AdminLogin from './components/Admin/AdminLogin';
 
 // Pages
-import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Buses from './pages/Buses';
@@ -21,13 +25,26 @@ import Settings from './pages/Settings';
 // Styles
 import './styles/global.css';
 
+/**
+ * Conditional rendering: This is the ADMIN-ONLY side of BorderBus
+ * Uses separate styling and data structure from the User Side
+ * To switch to User Side: import User app components instead
+ */
 function App() {
+  const IS_ADMIN_SIDE = true; // Toggle true/false to switch between Admin and User sides
+
+  // If this were a monolith, you could render the User app here
+  if (!IS_ADMIN_SIDE) {
+    return <div>User Side App would load here</div>;
+  }
+
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Authentication Routes */}
-          <Route path="/login" element={<Login />} />
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+          {/* Admin Authentication Routes */}
+          <Route path="/login" element={<AdminLogin />} />
           <Route path="/register" element={<Register />} />
 
           {/* Dashboard Routes - Protected */}
@@ -94,6 +111,7 @@ function App() {
         </Routes>
       </Router>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

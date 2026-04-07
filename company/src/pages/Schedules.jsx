@@ -9,7 +9,6 @@ import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
 import '../styles/ManagementPage.css';
 
 const Schedules = () => {
@@ -157,7 +156,6 @@ const Schedules = () => {
     <div className="dashboard-layout">
       <Sidebar />
       <div className="dashboard-main">
-        <Header />
         <div className="management-container">
           <div className="page-header">
             <h2 className="page-title">Manage Schedules</h2>
@@ -169,7 +167,7 @@ const Schedules = () => {
           <DataTable 
             columns={columns}
             data={schedules}
-            onEdit={() => handleOpenModal(arguments[0])}
+            onEdit={handleOpenModal}
             onDelete={handleDeleteSchedule}
           />
 

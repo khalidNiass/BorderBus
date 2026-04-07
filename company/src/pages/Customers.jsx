@@ -9,7 +9,6 @@ import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
 import '../styles/ManagementPage.css';
 
 const Customers = () => {
@@ -54,7 +53,6 @@ const Customers = () => {
     <div className="dashboard-layout">
       <Sidebar />
       <div className="dashboard-main">
-        <Header />
         <div className="management-container">
           <div className="page-header">
             <h2 className="page-title">Customers Management</h2>
