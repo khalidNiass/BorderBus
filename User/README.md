@@ -1,6 +1,6 @@
 # BorderBus User App
 
-Frontend for the BorderBus user experience, built with React + Vite.
+Frontend for the BorderBus User App experience, built with React + Vite.
 
 ## Features
 - Trip search and results filtering
