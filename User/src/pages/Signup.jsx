@@ -18,6 +18,12 @@ export default function Signup({ theme, onToggleTheme }) {
   const [form, setForm] = useState(initialState)
   const [errors, setErrors] = useState({})
   const [step, setStep] = useState(0)
+  const isCompanyPortal =
+    typeof window !== 'undefined' &&
+    window.location.pathname.startsWith('/company')
+  const companyRegisterUrl =
+    import.meta.env.VITE_COMPANY_REGISTER_URL || '/company/register'
+  const userSignupUrl = import.meta.env.VITE_USER_SIGNUP_URL || '/signup'
 
   const steps = [
     { key: 'fullName', label: 'Full Name', type: 'text', placeholder: 'Your full name' },
@@ -222,6 +228,22 @@ export default function Signup({ theme, onToggleTheme }) {
                   </>
                 )}
               </form>
+
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.href = isCompanyPortal
+                      ? userSignupUrl
+                      : companyRegisterUrl
+                  }}
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-elev)] px-4 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  {isCompanyPortal
+                    ? 'Back to User Sign Up'
+                    : 'Switch to Company Sign Up'}
+                </button>
+              </div>
 
               <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--text-muted)]">
                 <Link

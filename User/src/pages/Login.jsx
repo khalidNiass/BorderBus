@@ -12,6 +12,12 @@ const initialState = {
 export default function Login({ theme, onToggleTheme }) {
   const [form, setForm] = useState(initialState)
   const [errors, setErrors] = useState({})
+  const isCompanyPortal =
+    typeof window !== 'undefined' &&
+    window.location.pathname.startsWith('/company')
+  const companyLoginUrl =
+    import.meta.env.VITE_COMPANY_LOGIN_URL || '/company/login'
+  const userLoginUrl = import.meta.env.VITE_USER_LOGIN_URL || '/login'
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -175,6 +181,22 @@ export default function Login({ theme, onToggleTheme }) {
                   Continue with Google
                 </button>
               </form>
+
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    window.location.href = isCompanyPortal
+                      ? userLoginUrl
+                      : companyLoginUrl
+                  }}
+                  className="w-full rounded-xl border border-[var(--border)] bg-[var(--bg-elev)] px-4 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  {isCompanyPortal
+                    ? 'Back to User Login'
+                    : 'Switch to Company Login'}
+                </button>
+              </div>
 
               <div className="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm text-[var(--text-muted)]">
                 <a
