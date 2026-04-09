@@ -9,7 +9,7 @@ import {
 } from 'react-icons/fa'
 
 const navItems = [
-  { to: '/', label: 'Home', icon: FaHome },
+  { to: '/home', label: 'Home', icon: FaHome },
   { to: '/search', label: 'Search Trips', icon: FaSearch },
   { to: '/bookings', label: 'My Bookings', icon: FaTicketAlt },
   { to: '/notifications', label: 'Notifications', icon: FaBell },

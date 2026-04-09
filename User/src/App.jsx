@@ -16,10 +16,14 @@ import MyBookings from './pages/MyBookings'
 import ProfilePage from './pages/ProfilePage'
 import NotificationsPage from './pages/NotificationsPage'
 import SettingsPage from './pages/SettingsPage'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
+import LandingPage from './pages/LandingPage'
 import './App.css'
 
 const pageTitles = {
-  '/': 'Home',
+  '/': 'Landing',
+  '/home': 'Home',
   '/search': 'Search Trips',
   '/results': 'Search Results',
   '/routes': 'Routes',
@@ -31,6 +35,8 @@ const pageTitles = {
   '/profile': 'Profile',
   '/notifications': 'Notifications',
   '/settings': 'Settings',
+  '/login': 'Login',
+  '/signup': 'Sign Up',
 }
 
 function App() {
@@ -49,6 +55,10 @@ function App() {
     location.pathname.startsWith('/bus/') ||
     location.pathname === '/routes' ||
     location.pathname === '/operators'
+  const isMarketingPage =
+    location.pathname === '/' ||
+    location.pathname === '/login' ||
+    location.pathname === '/signup'
 
   useEffect(() => {
     document.body.dataset.theme = theme
@@ -57,6 +67,27 @@ function App() {
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))
+  }
+
+  if (isMarketingPage) {
+    return (
+      <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+        <Routes>
+          <Route
+            path="/"
+            element={<LandingPage theme={theme} onToggleTheme={toggleTheme} />}
+          />
+          <Route
+            path="/login"
+            element={<Login theme={theme} onToggleTheme={toggleTheme} />}
+          />
+          <Route
+            path="/signup"
+            element={<Signup theme={theme} onToggleTheme={toggleTheme} />}
+          />
+        </Routes>
+      </div>
+    )
   }
 
   return (
@@ -83,7 +114,7 @@ function App() {
         </div>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/search" element={<SearchTrips />} />
           <Route path="/results" element={<SearchResults />} />
           <Route path="/routes" element={<RoutesPage />} />
