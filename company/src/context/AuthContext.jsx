@@ -14,11 +14,13 @@ export const AuthProvider = ({ children }) => {
   const [companyData, setCompanyData] = useState(null);
   const [appData, setAppData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(true);
 
   // Load auth state from localStorage on mount
   useEffect(() => {
     const storedAuth = localStorage.getItem('companyAuth');
     const storedData = localStorage.getItem('appData');
+    const storedTheme = localStorage.getItem('theme');
 
     if (storedAuth) {
       try {
@@ -39,6 +41,14 @@ export const AuthProvider = ({ children }) => {
         console.error('Failed to load app data:', error);
         localStorage.removeItem('appData');
       }
+    }
+
+    if (storedTheme) {
+      const isDark = storedTheme === 'dark';
+      setIsDarkMode(isDark);
+      applyTheme(isDark);
+    } else {
+      applyTheme(true);
     }
 
     setLoading(false);
@@ -120,15 +130,39 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('appData', JSON.stringify(data));
   };
 
+  /**
+   * Apply theme to document
+   * @param {boolean} isDark - Whether to apply dark theme
+   */
+  const applyTheme = (isDark) => {
+    if (isDark) {
+      document.body.removeAttribute('data-theme');
+    } else {
+      document.body.setAttribute('data-theme', 'light');
+    }
+  };
+
+  /**
+   * Toggle dark mode
+   */
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    applyTheme(newMode);
+    localStorage.setItem('theme', newMode ? 'dark' : 'light');
+  };
+
   const value = {
     isAuthenticated,
     companyData,
     appData,
     loading,
+    isDarkMode,
     login,
     register,
     logout,
-    updateAppData
+    updateAppData,
+    toggleDarkMode
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

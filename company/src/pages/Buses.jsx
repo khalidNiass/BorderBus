@@ -9,7 +9,7 @@ import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
+import { FaBus, FaCheckCircle, FaTools, FaUsers } from 'react-icons/fa';
 import '../styles/ManagementPage.css';
 
 const Buses = () => {
@@ -122,25 +122,72 @@ const Buses = () => {
     )}
   ];
 
+  const activeBuses = buses.filter(b => b.status === 'Active').length;
+  const maintenanceBuses = buses.filter(b => b.status === 'Maintenance').length;
+  const totalCapacity = buses.reduce((sum, b) => sum + (b.capacity || 0), 0);
+
   return (
     <div className="dashboard-layout">
       <Sidebar />
       <div className="dashboard-main">
-        <Header />
         <div className="management-container">
           <div className="page-header">
-            <h2 className="page-title">Manage Buses</h2>
-            <button className="btn btn-primary" onClick={() => handleOpenModal()}>
-              + Add New Bus
+            <div className="header-content">
+              <h2 className="page-title">Manage Buses</h2>
+              <p className="page-subtitle">Monitor and manage your fleet operations</p>
+            </div>
+            <button className="btn btn-primary btn-add-new" onClick={() => handleOpenModal()}>
+              <span className="btn-icon-plus">+</span> Add New Bus
             </button>
           </div>
 
-          <DataTable 
-            columns={columns}
-            data={buses}
-            onEdit={() => handleOpenModal(arguments[0])}
-            onDelete={handleDeleteBus}
-          />
+          <div className="stats-grid">
+            <div className="stat-card">
+              <div className="stat-header">
+                <FaBus className="stat-icon" />
+                <h3>Total Buses</h3>
+              </div>
+              <div className="stat-value">{buses.length}</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-header">
+                <FaCheckCircle className="stat-icon" />
+                <h3>Active</h3>
+              </div>
+              <div className="stat-value stat-active">{activeBuses}</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-header">
+                <FaTools className="stat-icon" />
+                <h3>In Maintenance</h3>
+              </div>
+              <div className="stat-value stat-maintenance">{maintenanceBuses}</div>
+            </div>
+
+            <div className="stat-card">
+              <div className="stat-header">
+                <FaUsers className="stat-icon" />
+                <h3>Total Capacity</h3>
+              </div>
+              <div className="stat-value">{totalCapacity}</div>
+            </div>
+          </div>
+
+          <div className="table-section">
+            <div className="table-header">
+              <h3>Fleet Details</h3>
+              <p className="table-subtitle">Complete list of all buses in your fleet</p>
+            </div>
+
+            <DataTable 
+              columns={columns}
+              data={buses}
+              onEdit={handleOpenModal}
+              onDelete={handleDeleteBus}
+            />
+          </div>
 
           <Modal 
             isOpen={showModal}
@@ -151,46 +198,50 @@ const Buses = () => {
           >
             <form className="modal-form">
               <div className="form-group">
-                <label>Bus Number *</label>
+                <label>Bus Number <span className="required">*</span></label>
                 <input
                   type="text"
                   name="busNumber"
                   value={formData.busNumber}
                   onChange={handleFormChange}
                   placeholder="e.g., DB-001"
+                  required
                 />
               </div>
 
               <div className="form-row">
                 <div className="form-group">
-                  <label>Bus Type *</label>
-                  <select name="type" value={formData.type} onChange={handleFormChange}>
-                    <option value="AC">AC</option>
+                  <label>Bus Type <span className="required">*</span></label>
+                  <select name="type" value={formData.type} onChange={handleFormChange} required>
+                    <option value="AC">AC (Air-Conditioned)</option>
                     <option value="Non-AC">Non-AC</option>
                     <option value="Sleeper">Sleeper</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label>Capacity *</label>
+                  <label>Capacity <span className="required">*</span></label>
                   <input
                     type="number"
                     name="capacity"
                     value={formData.capacity}
                     onChange={handleFormChange}
                     placeholder="e.g., 45"
+                    min="1"
+                    required
                   />
                 </div>
               </div>
 
               <div className="form-group">
-                <label>Registration Number *</label>
+                <label>Registration Number <span className="required">*</span></label>
                 <input
                   type="text"
                   name="registrationNumber"
                   value={formData.registrationNumber}
                   onChange={handleFormChange}
                   placeholder="e.g., REG-BUS-001"
+                  required
                 />
               </div>
 
@@ -203,6 +254,8 @@ const Buses = () => {
                     value={formData.manufacturingYear}
                     onChange={handleFormChange}
                     placeholder="2024"
+                    min="1990"
+                    max={new Date().getFullYear()}
                   />
                 </div>
 

@@ -9,7 +9,6 @@ import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import Sidebar from '../components/Sidebar';
-import Header from '../components/Header';
 import '../styles/ManagementPage.css';
 
 const Routes = () => {
@@ -22,6 +21,9 @@ const Routes = () => {
     routeName: '',
     departureLocation: '',
     destinationLocation: '',
+    from: '',
+    to: '',
+    price: '',
     travelDuration: '',
     distance: '',
     stops: ''
@@ -41,6 +43,9 @@ const Routes = () => {
         routeName: route.routeName,
         departureLocation: route.departureLocation,
         destinationLocation: route.destinationLocation,
+        from: route.from || route.departureLocation.split(' ')[0],
+        to: route.to || route.destinationLocation.split(' ')[0],
+        price: route.price || '',
         travelDuration: route.travelDuration,
         distance: route.distance,
         stops: route.stops.join(', ')
@@ -51,6 +56,9 @@ const Routes = () => {
         routeName: '',
         departureLocation: '',
         destinationLocation: '',
+        from: '',
+        to: '',
+        price: '',
         travelDuration: '',
         distance: '',
         stops: ''
@@ -73,7 +81,7 @@ const Routes = () => {
   };
 
   const handleSaveRoute = () => {
-    if (!formData.routeName || !formData.departureLocation || !formData.destinationLocation) {
+    if (!formData.routeName || !formData.departureLocation || !formData.destinationLocation || !formData.price) {
       alert('Please fill in all required fields');
       return;
     }
@@ -92,6 +100,9 @@ const Routes = () => {
               routeName: formData.routeName,
               departureLocation: formData.departureLocation,
               destinationLocation: formData.destinationLocation,
+              from: formData.from,
+              to: formData.to,
+              price: parseFloat(formData.price),
               travelDuration: formData.travelDuration,
               distance: parseInt(formData.distance),
               stops: stops
@@ -104,6 +115,9 @@ const Routes = () => {
         routeName: formData.routeName,
         departureLocation: formData.departureLocation,
         destinationLocation: formData.destinationLocation,
+        from: formData.from,
+        to: formData.to,
+        price: parseFloat(formData.price),
         travelDuration: formData.travelDuration,
         distance: parseInt(formData.distance),
         stops: stops,
@@ -142,7 +156,6 @@ const Routes = () => {
     <div className="dashboard-layout">
       <Sidebar />
       <div className="dashboard-main">
-        <Header />
         <div className="management-container">
           <div className="page-header">
             <h2 className="page-title">Manage Routes</h2>
@@ -154,7 +167,7 @@ const Routes = () => {
           <DataTable 
             columns={columns}
             data={routes}
-            onEdit={() => handleOpenModal(arguments[0])}
+            onEdit={handleOpenModal}
             onDelete={handleDeleteRoute}
           />
 
@@ -213,6 +226,45 @@ const Routes = () => {
                   />
                 </div>
 
+                <div className="form-group">
+                  <label>Price per Ticket *</label>
+                  <input
+                    type="number"
+                    name="price"
+                    value={formData.price}
+                    onChange={handleFormChange}
+                    placeholder="e.g., 500"
+                    step="0.01"
+                    min="0"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Origin (Short form)</label>
+                  <input
+                    type="text"
+                    name="from"
+                    value={formData.from}
+                    onChange={handleFormChange}
+                    placeholder="e.g., City A"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Destination (Short form)</label>
+                  <input
+                    type="text"
+                    name="to"
+                    value={formData.to}
+                    onChange={handleFormChange}
+                    placeholder="e.g., City B"
+                  />
+                </div>
+              </div>
+
+              <div className="form-row">
                 <div className="form-group">
                   <label>Distance (km)</label>
                   <input

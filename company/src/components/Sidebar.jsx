@@ -5,20 +5,31 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { FaBus, FaChartBar, FaRoad, FaCalendar, FaTicketAlt, FaUsers, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import '../styles/Sidebar.css';
 
 const Sidebar = () => {
   const location = useLocation();
   const { logout } = useAuth();
 
+  const iconComponents = {
+    dashboard: <FaChartBar />,
+    buses: <FaBus />,
+    routes: <FaRoad />,
+    schedules: <FaCalendar />,
+    bookings: <FaTicketAlt />,
+    customers: <FaUsers />,
+    settings: <FaCog />
+  };
+
   const menuItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/buses', label: 'Manage Buses', icon: '🚌' },
-    { path: '/routes', label: 'Manage Routes', icon: '🛣️' },
-    { path: '/schedules', label: 'Manage Schedules', icon: '📅' },
-    { path: '/bookings', label: 'Bookings', icon: '🎫' },
-    { path: '/customers', label: 'Customers', icon: '👥' },
-    { path: '/settings', label: 'Settings', icon: '⚙️' }
+    { path: '/dashboard', label: 'Dashboard', key: 'dashboard' },
+    { path: '/buses', label: 'Manage Buses', key: 'buses' },
+    { path: '/routes', label: 'Manage Routes', key: 'routes' },
+    { path: '/schedules', label: 'Manage Schedules', key: 'schedules' },
+    { path: '/bookings', label: 'Bookings', key: 'bookings' },
+    { path: '/customers', label: 'Customers', key: 'customers' },
+    { path: '/settings', label: 'Settings', key: 'settings' }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -32,7 +43,7 @@ const Sidebar = () => {
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <h1 className="sidebar-title">🚌 BorderBus Admin</h1>
+        <h1 className="sidebar-title"><FaBus className="sidebar-logo" /> BorderBus Admin</h1>
         <p className="sidebar-subtitle">Company Dashboard</p>
       </div>
 
@@ -43,7 +54,7 @@ const Sidebar = () => {
             to={item.path}
             className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
           >
-            <span className="nav-icon">{item.icon}</span>
+            <span className="nav-icon">{iconComponents[item.key]}</span>
             <span className="nav-label">{item.label}</span>
           </Link>
         ))}
@@ -51,7 +62,7 @@ const Sidebar = () => {
 
       <div className="sidebar-footer">
         <button className="logout-btn" onClick={handleLogout}>
-          🚪 Logout
+          <FaSignOutAlt /> Logout
         </button>
       </div>
     </aside>

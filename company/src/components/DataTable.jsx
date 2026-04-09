@@ -2,8 +2,7 @@
  * Data Table Component
  * Reusable table for displaying data with actions
  */
-
-import '../styles/Table.css';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';import '../styles/Table.css';
 
 const DataTable = ({ 
   columns, 
@@ -49,7 +48,7 @@ const DataTable = ({
                           onClick={() => onEdit(row)}
                           title="Edit"
                         >
-                          ✏️
+                          <FaPencilAlt />
                         </button>
                       )}
                       {onDelete && (
@@ -58,7 +57,7 @@ const DataTable = ({
                           onClick={() => onDelete(row)}
                           title="Delete"
                         >
-                          🗑️
+                          <FaTrash />
                         </button>
                       )}
                     </div>
