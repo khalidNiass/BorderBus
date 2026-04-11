@@ -7,6 +7,10 @@ import {
   FiMapPin,
   FiClock,
   FiMap,
+  FiStar,
+  FiShield,
+  FiTrendingUp,
+  FiUsers,
 } from 'react-icons/fi'
 import heroImage from '../assets/bus.jfif'
 import Navbar from '../components/Navbar'
@@ -35,11 +39,71 @@ const features = [
   },
 ]
 
+const stats = [
+  { value: '10K+', label: 'Bookings per month' },
+  { value: '98%', label: 'On-time departures' },
+  { value: '24/7', label: 'Support coverage' },
+  { value: '4.9/5', label: 'Average rating' },
+]
+
+const testimonials = [
+  {
+    name: 'Amina Diop',
+    title: 'Frequent commuter',
+    quote:
+      'BorderBus makes international travel simple, reliable, and surprisingly fast. I never worry about seats anymore.',
+  },
+  {
+    name: 'Samuel Toure',
+    title: 'Business traveler',
+    quote:
+      'I can compare operators in one place, book instantly, and get on my way without the hassle of long lines.',
+  },
+  {
+    name: 'Nadia Cissé',
+    title: 'Holiday planner',
+    quote:
+      'The seat selection and digital ticketing are game changers. My family trip was smooth from start to finish.',
+  },
+]
+
+const partners = [
+  'TransAfrique',
+  'Coastal Express',
+  'Atlas Routes',
+  'Sunline Travels',
+]
+
+const faqs = [
+  {
+    question: 'Can I book cross-border routes with one ticket?',
+    answer:
+      'Yes, BorderBus supports regional routes across multiple countries with a single seamless checkout experience.',
+  },
+  {
+    question: 'Is my payment information secure?',
+    answer:
+      'Absolutely. We use encrypted payment processing and protect card details with trusted providers.',
+  },
+  {
+    question: 'How do I get help during travel?',
+    answer:
+      'Our support team is available 24/7, and you can access live chat or phone support from your account dashboard.',
+  },
+]
+
 const steps = [
-  'Search Trips',
-  'Choose Bus',
-  'Select Seat',
-  'Pay & Travel',
+  'Find your route',
+  'Choose your bus',
+  'Reserve your seat',
+  'Complete payment',
+]
+
+const stepDetails = [
+  'Browse schedules, operators, and travel times with confidence.',
+  'Compare buses by comfort, amenities, and availability.',
+  'Select the exact seat you want with live real-time updates.',
+  'Pay securely and receive your ticket instantly to your inbox.',
 ]
 
 const routes = [
@@ -60,6 +124,18 @@ const routes = [
     duration: '7h 45m',
     price: '$55',
     seats: '9 seats left',
+  },
+  {
+    route: 'Lagos → Cotonou',
+    duration: '8h 10m',
+    price: '$42',
+    seats: '21 seats left',
+  },
+  {
+    route: 'Niamey → Ouagadougou',
+    duration: '9h 30m',
+    price: '$39',
+    seats: '14 seats left',
   },
 ]
 
@@ -86,8 +162,8 @@ export default function LandingPage({ theme, onToggleTheme }) {
           style={{
             backgroundImage:
               theme === 'dark'
-                ? 'linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.75), rgba(11,13,18,1))'
-                : 'linear-gradient(180deg, rgba(248,250,252,0.85), rgba(248,250,252,0.7), rgba(248,250,252,1))',
+                ? 'linear-gradient(180deg, rgba(0,0,0,0.75), rgba(10,12,18,0.95) 65%)'
+                : 'linear-gradient(180deg, rgba(255,255,255,0.85), rgba(247,249,254,0.95) 65%)',
           }}
         ></div>
         <Navbar theme={theme} onToggleTheme={onToggleTheme} />
@@ -101,12 +177,24 @@ export default function LandingPage({ theme, onToggleTheme }) {
               BorderBus
             </span>
             <h1 className="mt-6 text-4xl font-semibold leading-tight text-[var(--text)] sm:text-6xl lg:text-6xl">
-              Travel Across Borders with Ease
+              Seamless cross-border travel, booked in minutes.
             </h1>
-            <p className="mt-5 max-w-xl text-base text-[var(--text-muted)] sm:text-lg">
-              Book inter-state and international bus trips quickly and securely
-              with BorderBus.
+            <p className="mt-5 max-w-2xl text-base text-[var(--text-muted)] sm:text-lg">
+              BorderBus connects verified operators, real-time availability,
+              and secure checkout so your next international route is smooth from
+              search to boarding.
             </p>
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center text-sm text-[var(--text-muted)] shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+                Verified routes & operators
+              </div>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center text-sm text-[var(--text-muted)] shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+                Easy seat selection
+              </div>
+              <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center text-sm text-[var(--text-muted)] shadow-[0_12px_30px_rgba(0,0,0,0.12)]">
+                24/7 travel support
+              </div>
+            </div>
             <div className="mt-7 flex flex-wrap gap-4">
               <MotionLink
                 to="/login"
@@ -127,13 +215,13 @@ export default function LandingPage({ theme, onToggleTheme }) {
             </div>
             <div className="mt-10 grid gap-4 text-xs uppercase tracking-[0.3em] text-[var(--text-muted)] sm:grid-cols-3">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center">
-                Trusted by 10,000+ travelers
+                Trusted by professional travelers
               </div>
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center">
-                50+ bus companies
+                50+ vetted operators
               </div>
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center">
-                8 countries connected
+                Coverage across 8 countries
               </div>
             </div>
           </div>
@@ -178,10 +266,11 @@ export default function LandingPage({ theme, onToggleTheme }) {
             Features
           </p>
           <h2 className="text-3xl font-semibold sm:text-4xl">
-            Everything you need to ride
+            Professional tools for modern travel
           </h2>
           <p className="text-[var(--text-muted)]">
-            BorderBus delivers premium booking tools for busy travelers.
+            Manage cross-border journeys with instant availability, secure
+            checkout, and digital tickets designed for frequent travelers.
           </p>
         </div>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -214,23 +303,23 @@ export default function LandingPage({ theme, onToggleTheme }) {
             How it works
           </p>
           <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-            Book in four easy steps
+            Streamlined booking process
           </h2>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, index) => (
               <motion.div
                 key={step}
                 whileHover={{ y: -4 }}
-                className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elev)] p-5 text-[var(--text-muted)]"
+                className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-6 text-[var(--text-muted)] shadow-[0_10px_30px_rgba(0,0,0,0.08)]"
               >
-                <div className="text-sm font-semibold text-[var(--accent)]">
-                  {String(index + 1).padStart(2, '0')}
+                <div className="text-sm font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+                  Step {index + 1}
                 </div>
                 <h3 className="mt-3 text-lg font-semibold text-[var(--text)]">
                   {step}
                 </h3>
-                <p className="mt-2 text-sm text-[var(--text-muted)]">
-                  Move from search to boarding with guided booking flows.
+                <p className="mt-3 text-sm leading-relaxed text-[var(--text-muted)]">
+                  {stepDetails[index]}
                 </p>
               </motion.div>
             ))}
@@ -239,76 +328,194 @@ export default function LandingPage({ theme, onToggleTheme }) {
       </motion.section>
 
       <motion.section className="mx-auto w-full max-w-6xl px-4 pb-24" {...fadeUp}>
-        <div className="flex items-center justify-between gap-6">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
-              Popular routes
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-              Curated cross-border journeys
-            </h2>
-          </div>
-          <div className="hidden items-center gap-2 text-sm text-[var(--text-muted)] md:flex">
-            <FiMap />
-            Updated daily
-          </div>
-        </div>
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {routes.map((route) => (
-            <motion.div
-              key={route.route}
-              whileHover={{ y: -6, scale: 1.01 }}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/85 p-6 shadow-[0_20px_55px_rgba(0,0,0,0.35)] transition hover:border-[var(--accent)]"
-            >
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-[var(--text)]">
-                  {route.route}
-                </h3>
-                <span className="rounded-full border border-[var(--border)] bg-[var(--bg-elev)] px-3 py-1 text-xs text-[var(--text-muted)]">
-                  {route.seats}
-                </span>
-              </div>
-              <div className="mt-4 flex items-center justify-between text-sm text-[var(--text-muted)]">
-                <div className="flex items-center gap-2">
-                  <FiClock />
-                  {route.duration}
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                Why travelers choose us
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
+                Travel smarter with BorderBus
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm text-[var(--text-muted)] sm:text-base">
+                From route planning to seat selection, we give you the tools to
+                book faster, travel safer, and stay informed every step of the
+                journey.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {stats.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-5 text-center"
+                >
+                  <div className="text-3xl font-semibold text-[var(--text)]">
+                    {stat.value}
+                  </div>
+                  <p className="mt-2 text-sm text-[var(--text-muted)]">
+                    {stat.label}
+                  </p>
                 </div>
-                <div className="text-base font-semibold text-[var(--text)]">
-                  {route.price}
-                </div>
-              </div>
-              <div className="mt-5 flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-[var(--accent)]">
-                View details
-              </div>
-            </motion.div>
-          ))}
+              ))}
+            </div>
+          </div>
         </div>
       </motion.section>
 
-      <motion.section
-        id="about"
-        className="mx-auto w-full max-w-6xl px-4 pb-24"
-        {...fadeUp}
-      >
-        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-8">
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
-            About BorderBus
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
-            Built for borderless travel
-          </h2>
-          <p className="mt-4 max-w-3xl text-sm text-[var(--text-muted)] sm:text-base">
-            BorderBus connects travelers with reliable cross-border operators,
-            delivering fast bookings, transparent pricing, and real-time travel
-            updates. Our mission is to make international bus travel feel as
-            effortless as a local commute.
-          </p>
-          <div className="mt-6">
+      <motion.section className="mx-auto w-full max-w-6xl px-4 pb-24" {...fadeUp}>
+        <div className="flex flex-col gap-6">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+              Customer stories
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
+              Real travelers, real journeys
+            </h2>
+          </div>
+          <div className="grid gap-6 xl:grid-cols-3">
+            {testimonials.map((testimonial) => (
+              <motion.div
+                key={testimonial.name}
+                whileHover={{ y: -4 }}
+                className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-6 shadow-[0_16px_40px_rgba(0,0,0,0.2)]"
+              >
+                <p className="text-sm leading-relaxed text-[var(--text-muted)]">
+                  “{testimonial.quote}”
+                </p>
+                <div className="mt-6">
+                  <p className="font-semibold text-[var(--text)]">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-sm text-[var(--text-muted)]">
+                    {testimonial.title}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section className="mx-auto w-full max-w-6xl px-4 pb-24" {...fadeUp}>
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                Trusted operators
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
+                Partnered with reliable operators
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm text-[var(--text-muted)] sm:text-base">
+                We work with top bus companies across West Africa to ensure every
+                route is covered by experienced staff, safe vehicles, and
+                predictable schedules.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3 text-sm text-[var(--text-muted)]">
+                {partners.map((partner) => (
+                  <span
+                    key={partner}
+                    className="rounded-full border border-[var(--border)] bg-[var(--bg-elev)] px-4 py-2"
+                  >
+                    {partner}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-5">
+                <div className="flex items-center gap-3 text-[var(--accent)]">
+                  <FiShield />
+                  <span className="font-semibold">Safety first</span>
+                </div>
+                <p className="mt-3 text-sm text-[var(--text-muted)]">
+                  We screen operators for cleaner buses, valid licenses, and
+                  punctual departures.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-5">
+                <div className="flex items-center gap-3 text-[var(--accent)]">
+                  <FiTrendingUp />
+                  <span className="font-semibold">Transparent fares</span>
+                </div>
+                <p className="mt-3 text-sm text-[var(--text-muted)]">
+                  Prices include fees and seat details so there are no surprises
+                  at checkout.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-5">
+                <div className="flex items-center gap-3 text-[var(--accent)]">
+                  <FiUsers />
+                  <span className="font-semibold">Support anytime</span>
+                </div>
+                <p className="mt-3 text-sm text-[var(--text-muted)]">
+                  Our team is available around the clock to answer questions
+                  before and during your trip.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-5">
+                <div className="flex items-center gap-3 text-[var(--accent)]">
+                  <FiStar />
+                  <span className="font-semibold">Highly rated</span>
+                </div>
+                <p className="mt-3 text-sm text-[var(--text-muted)]">
+                  Thousands of travelers rate our platform excellent for cross-border travel.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section className="mx-auto w-full max-w-6xl px-4 pb-24" {...fadeUp}>
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+              FAQ
+            </p>
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
+              Frequently asked questions
+            </h2>
+          </div>
+          <div className="mt-8 grid gap-4">
+            {faqs.map((faq) => (
+              <div
+                key={faq.question}
+                className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-6"
+              >
+                <h3 className="text-lg font-semibold text-[var(--text)]">
+                  {faq.question}
+                </h3>
+                <p className="mt-3 text-sm text-[var(--text-muted)]">
+                  {faq.answer}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      <motion.section className="mx-auto w-full max-w-6xl px-4 pb-24" {...fadeUp}>
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.12)]">
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                Ready to travel
+              </p>
+              <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
+                Launch your next international trip with confidence
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm text-[var(--text-muted)] sm:text-base">
+                Join thousands of travelers booking cross-border bus travel on a
+                platform built for fast search, full transparency, and modern
+                travel convenience.
+              </p>
+            </div>
             <MotionLink
               to="/signup"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.98 }}
-              className="inline-flex items-center rounded-full bg-gradient-to-r from-[#1d9bf0] via-[#3bb2ff] to-[#1d9bf0] px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(29,155,240,0.4)] transition hover:-translate-y-0.5 hover:shadow-[0_20px_40px_rgba(29,155,240,0.5)]"
+              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#1d9bf0] via-[#3bb2ff] to-[#1d9bf0] px-8 py-4 text-sm font-semibold text-white shadow-[0_18px_44px_rgba(29,155,240,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_24px_50px_rgba(29,155,240,0.45)]"
             >
               Start booking today
             </MotionLink>
