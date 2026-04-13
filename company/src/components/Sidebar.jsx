@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { FaBus, FaChartBar, FaRoad, FaCalendar, FaTicketAlt, FaUsers, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import '../styles/Sidebar.css';
 
-const Sidebar = () => {
+const Sidebar = ({ id = 'company-sidebar', isOpen = false, isMobile = false, toggleSidebar }) => {
   const location = useLocation();
   const { logout } = useAuth();
 
@@ -19,7 +19,8 @@ const Sidebar = () => {
     schedules: <FaCalendar />,
     bookings: <FaTicketAlt />,
     customers: <FaUsers />,
-    settings: <FaCog />
+    settings: <FaCog />,
+    profile: <FaUsers />
   };
 
   const menuItems = [
@@ -29,7 +30,8 @@ const Sidebar = () => {
     { path: '/schedules', label: 'Manage Schedules', key: 'schedules' },
     { path: '/bookings', label: 'Bookings', key: 'bookings' },
     { path: '/customers', label: 'Customers', key: 'customers' },
-    { path: '/settings', label: 'Settings', key: 'settings' }
+    { path: '/settings', label: 'Settings', key: 'settings' },
+    { path: '/profile', label: 'Profile', key: 'profile' }
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -40,19 +42,41 @@ const Sidebar = () => {
     }
   };
 
+  const handleNavItemClick = () => {
+    if (toggleSidebar && isMobile) {
+      toggleSidebar();
+    }
+  };
+
   return (
-    <aside className="sidebar">
+    <aside
+      id={id}
+      className={`sidebar ${isOpen ? 'open' : ''}`}
+      aria-hidden={isMobile ? !isOpen : false}
+      role="navigation"
+      aria-label="Sidebar"
+    >
       <div className="sidebar-header">
-        <h1 className="sidebar-title"><FaBus className="sidebar-logo" /> BorderBus Admin</h1>
-        <p className="sidebar-subtitle">Company Dashboard</p>
+        <div className="sidebar-profile">
+          <div className="sidebar-avatar">BT</div>
+          <div className="sidebar-profile-details">
+            <p className="sidebar-profile-name">Admin</p>
+            <p className="sidebar-profile-role">Company Manager</p>
+            <Link to="/profile" className="sidebar-profile-btn" onClick={handleNavItemClick}>
+              View Profile
+            </Link>
+          </div>
+        </div>
       </div>
 
-      <nav className="sidebar-nav">
+      <nav className="sidebar-nav" aria-label="Primary">
         {menuItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
             className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
+            onClick={handleNavItemClick}
+            aria-current={isActive(item.path) ? 'page' : undefined}
           >
             <span className="nav-icon">{iconComponents[item.key]}</span>
             <span className="nav-label">{item.label}</span>

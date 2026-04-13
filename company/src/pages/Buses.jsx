@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
-import Sidebar from '../components/Sidebar';
+import DashboardLayout from '../components/DashboardLayout';
 import { FaBus, FaCheckCircle, FaTools, FaUsers } from 'react-icons/fa';
 import '../styles/ManagementPage.css';
 
@@ -127,10 +127,8 @@ const Buses = () => {
   const totalCapacity = buses.reduce((sum, b) => sum + (b.capacity || 0), 0);
 
   return (
-    <div className="dashboard-layout">
-      <Sidebar />
-      <div className="dashboard-main">
-        <div className="management-container">
+    <DashboardLayout>
+      <div className="management-container">
           <div className="page-header">
             <div className="header-content">
               <h2 className="page-title">Manage Buses</h2>
@@ -270,9 +268,8 @@ const Buses = () => {
               </div>
             </form>
           </Modal>
-        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

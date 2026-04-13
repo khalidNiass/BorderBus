@@ -23,12 +23,46 @@
 .header-left {
   flex: 1;
   min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .company-branding {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+.menu-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--text);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.menu-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 8px 18px rgba(29, 155, 240, 0.2);
+}
+
+.menu-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.menu-icon {
+  width: 18px;
+  height: 18px;
 }
 
 .company-logo {
@@ -268,5 +302,9 @@
 
   .user-section {
     padding: 0;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
   }
 }

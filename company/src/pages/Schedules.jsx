@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
-import Sidebar from '../components/Sidebar';
+import DashboardLayout from '../components/DashboardLayout';
 import '../styles/ManagementPage.css';
 
 const Schedules = () => {
@@ -153,10 +153,8 @@ const Schedules = () => {
   ];
 
   return (
-    <div className="dashboard-layout">
-      <Sidebar />
-      <div className="dashboard-main">
-        <div className="management-container">
+    <DashboardLayout>
+      <div className="management-container">
           <div className="page-header">
             <h2 className="page-title">Manage Schedules</h2>
             <button className="btn btn-primary" onClick={() => handleOpenModal()}>
@@ -259,9 +257,8 @@ const Schedules = () => {
               </div>
             </form>
           </Modal>
-        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

@@ -4,32 +4,31 @@
  */
 
 import { useAuth } from '../context/AuthContext';
-import { FaBus } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { BsSun, BsMoon } from 'react-icons/bs';
 import '../styles/Header.css';
 
-const Header = () => {
-  const { companyData, isDarkMode, toggleDarkMode } = useAuth();
+const Header = ({ toggleSidebar = () => {}, isSidebarOpen = false }) => {
+  const { isDarkMode, toggleDarkMode } = useAuth();
   const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  const getInitials = (name) => {
-    return name
-      ?.split(' ')
-      .map(n => n[0])
-      .join('')
-      .toUpperCase() || 'A';
-  };
 
   return (
     <header className="dashboard-header">
       <div className="header-content">
         <div className="header-left">
+          <button
+            type="button"
+            className="menu-toggle"
+            onClick={toggleSidebar}
+            aria-label={isSidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isSidebarOpen}
+            aria-controls="company-sidebar"
+          >
+            {isSidebarOpen ? <FaTimes className="menu-icon" /> : <FaBars className="menu-icon" />}
+          </button>
           <div className="company-branding">
-            <div className="company-logo">
-              <FaBus className="logo-icon" />
-            </div>
             <div className="company-info">
-              <h1 className="company-name">{companyData?.name || 'Company Dashboard'}</h1>
-              <p className="company-email">{companyData?.email || 'admin@company.com'}</p>
+              <h1 className="company-name">Company Dashboard</h1>
             </div>
           </div>
         </div>
@@ -50,13 +49,7 @@ const Header = () => {
           >
             {isDarkMode ? <BsSun className="theme-icon" /> : <BsMoon className="theme-icon" />}
           </button>
-          <div className="user-section">
-            <div className="user-avatar">{getInitials(companyData?.name)}</div>
-            <div className="user-details">
-              <p className="user-name">Admin</p>
-              <p className="user-role">Company Manager</p>
-            </div>
-          </div>
+          
         </div>
       </div>
     </header>

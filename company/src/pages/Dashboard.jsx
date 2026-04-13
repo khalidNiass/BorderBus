@@ -4,13 +4,14 @@
  */
 
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { initialData, calculateStats, getRecentBookings } from '../data/mockData';
 import DashboardCard from '../components/DashboardCard';
 import DataTable from '../components/DataTable';
-import Sidebar from '../components/Sidebar';
+import DashboardLayout from '../components/DashboardLayout';
 import { motion } from 'framer-motion';
-import { TrendingUp, TrendingDown, Activity, Calendar, Users, DollarSign, Bus, Route, Download, RefreshCw } from 'lucide-react';
+import { TrendingUp, TrendingDown, Activity, Calendar, Users, DollarSign, Bus, Route } from 'lucide-react';
 import '../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -18,7 +19,6 @@ const Dashboard = () => {
   const [data, setData] = useState(appData || initialData);
   const [stats, setStats] = useState({});
   const [selectedPeriod, setSelectedPeriod] = useState('all');
-  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!appData) {
@@ -32,16 +32,34 @@ const Dashboard = () => {
     setStats(newStats);
   }, [data]);
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => setRefreshing(false), 600);
-  };
-
-  const handleExport = () => {
-    alert('Export functionality: CSV/PDF reports would be generated here');
-  };
-
   const recentBookings = getRecentBookings(data.bookings, 5);
+
+  const quickActions = [
+    {
+      label: 'Add new bus',
+      path: '/buses',
+      icon: <Bus size={20} />,
+      meta: 'Fleet',
+    },
+    {
+      label: 'Create a route',
+      path: '/routes',
+      icon: <Route size={20} />,
+      meta: 'Routing',
+    },
+    {
+      label: 'Publish schedule',
+      path: '/schedules',
+      icon: <Calendar size={20} />,
+      meta: 'Timetable',
+    },
+    {
+      label: 'Review bookings',
+      path: '/bookings',
+      icon: <Activity size={20} />,
+      meta: 'Sales',
+    },
+  ];
 
   const bookingColumns = [
     { key: 'id', label: 'ID', width: '100px' },
@@ -74,15 +92,13 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-layout">
-      <Sidebar />
-      <div className="dashboard-main">
-        <motion.div
-          className="dashboard-content"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
+    <DashboardLayout>
+      <motion.div
+        className="dashboard-content"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
           {/* Page Header with Actions */}
           <motion.div
             className="page-actions-header"
@@ -105,27 +121,27 @@ const Dashboard = () => {
                 </select>
               </div>
               
-              <motion.button
-                className="action-btn refresh-btn"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleRefresh}
-                animate={refreshing ? { rotate: 360 } : { rotate: 0 }}
-                transition={{ duration: 0.6, ease: 'linear' }}
-              >
-                <RefreshCw size={18} strokeWidth={2} />
-              </motion.button>
-              
-              <motion.button
-                className="action-btn export-btn"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={handleExport}
-              >
-                <Download size={18} strokeWidth={2} />
-                <span>Export</span>
-              </motion.button>
             </div>
+          </motion.div>
+
+          <motion.div className="section-header" variants={itemVariants}>
+            <h2 className="section-title">Quick actions</h2>
+          </motion.div>
+          <motion.div className="quick-actions-grid" variants={containerVariants} initial="hidden" animate="visible">
+            {quickActions.map((action) => (
+              <motion.div key={action.label} variants={itemVariants} className="quick-action-card">
+                <div className="stat-icon">
+                  {action.icon}
+                </div>
+                <div className="stat-content">
+                  <p className="stat-label">{action.meta}</p>
+                  <h3 className="card-title">{action.label}</h3>
+                </div>
+                <Link to={action.path} className="view-all-link">
+                  Open
+                </Link>
+              </motion.div>
+            ))}
           </motion.div>
 
           {/* Key Metrics - Premium KPI Cards */}
@@ -321,9 +337,8 @@ const Dashboard = () => {
               </div>
             </div>
           </motion.div>
-        </motion.div>
-      </div>
-    </div>
+      </motion.div>
+    </DashboardLayout>
   );
 };
 

@@ -13,6 +13,8 @@
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  transition: transform 0.3s ease, visibility 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 .sidebar-header {
@@ -20,27 +22,56 @@
   border-bottom: 1px solid var(--border);
 }
 
-.sidebar-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 5px;
+.sidebar-profile {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: var(--text);
-  font-family: var(--mono);
+  gap: 12px;
 }
 
-.sidebar-logo {
-  width: 20px;
-  height: 20px;
+.sidebar-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent) 0%, #0891b2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(29, 155, 240, 0.3);
   flex-shrink: 0;
 }
 
-.sidebar-subtitle {
+.sidebar-profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-profile-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.sidebar-profile-role {
   font-size: 12px;
   color: var(--text-muted);
   margin: 0;
+}
+
+.sidebar-profile-btn {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.sidebar-profile-btn:hover {
+  opacity: 0.8;
 }
 
 .sidebar-nav {
@@ -134,8 +165,32 @@
 
 @media (max-width: 768px) {
   .sidebar {
-    width: 60px;
-    padding: 0;
+    width: 250px;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease, visibility 0.2s ease;
+    visibility: hidden;
+    position: fixed;
+    z-index: 1000;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  }
+
+  .sidebar-header {
+    padding: 24px 20px;
+  }
+
+  .sidebar-footer {
+    padding: 16px 20px 24px;
+  }
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    width: 250px;
   }
 
   .sidebar-header {
@@ -143,13 +198,21 @@
     text-align: center;
   }
 
-  .sidebar-title {
-    font-size: 14px;
-    margin-bottom: 0;
+  .sidebar-profile {
+    flex-direction: column;
+    gap: 6px;
   }
 
-  .sidebar-subtitle {
+  .sidebar-profile-details {
+    align-items: center;
+  }
+
+  .sidebar-profile-role {
     display: none;
+  }
+
+  .sidebar-profile-btn {
+    margin-top: 6px;
   }
 
   .nav-item {

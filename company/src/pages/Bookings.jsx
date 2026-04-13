@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { initialData } from '../data/mockData';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
-import Sidebar from '../components/Sidebar';
+import DashboardLayout from '../components/DashboardLayout';
 import '../styles/ManagementPage.css';
 
 const Bookings = () => {
@@ -69,10 +69,8 @@ const Bookings = () => {
   ];
 
   return (
-    <div className="dashboard-layout">
-      <Sidebar />
-      <div className="dashboard-main">
-        <div className="management-container">
+    <DashboardLayout>
+      <div className="management-container">
           <div className="page-header">
             <h2 className="page-title">Bookings Management</h2>
             <div className="filter-group">
@@ -160,9 +158,8 @@ const Bookings = () => {
               </div>
             )}
           </Modal>
-        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -11,6 +12,7 @@ import {
   FiShield,
   FiTrendingUp,
   FiUsers,
+  FiMoreHorizontal,
 } from 'react-icons/fi'
 import heroImage from '../assets/bus.jfif'
 import Navbar from '../components/Navbar'
@@ -139,6 +141,8 @@ const routes = [
   },
 ]
 
+const companyLoginUrl = import.meta.env.VITE_COMPANY_LOGIN_URL || '/company/login'
+
 const fadeUp = {
   initial: { opacity: 0, y: 26 },
   whileInView: { opacity: 1, y: 0 },
@@ -147,7 +151,9 @@ const fadeUp = {
 }
 
 export default function LandingPage({ theme, onToggleTheme }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const MotionLink = motion(Link)
+  const MotionAnchor = motion.a
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
@@ -195,24 +201,109 @@ export default function LandingPage({ theme, onToggleTheme }) {
                 24/7 travel support
               </div>
             </div>
-            <div className="mt-7 flex flex-wrap gap-4">
+            <div className="mt-7 flex flex-wrap items-center gap-3">
               <MotionLink
                 to="/login"
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
-                className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-6 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-6 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)] md:hidden"
               >
-                Login
+                Sign In
               </MotionLink>
-              <MotionLink
-                to="/signup"
-                whileHover={{ scale: 1.04 }}
-                whileTap={{ scale: 0.98 }}
-                className="rounded-full bg-gradient-to-r from-[#1d9bf0] via-[#3bb2ff] to-[#1d9bf0] px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(29,155,240,0.45)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_46px_rgba(29,155,240,0.55)]"
+
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen((prev) => !prev)}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 text-[var(--text)] transition hover:border-[var(--accent)] md:hidden"
+                aria-label="More actions"
               >
-                Sign Up
-              </MotionLink>
+                <FiMoreHorizontal className="h-5 w-5" />
+              </button>
+
+              <div className="hidden items-center gap-3 md:flex">
+                <MotionLink
+                  to="/login"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-6 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  Login
+                </MotionLink>
+                <MotionAnchor
+                  href={companyLoginUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-6 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  Operator Portal
+                </MotionAnchor>
+                <MotionLink
+                  to="/signup"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full bg-gradient-to-r from-[#1d9bf0] via-[#3bb2ff] to-[#1d9bf0] px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(29,155,240,0.45)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_46px_rgba(29,155,240,0.55)]"
+                >
+                  Sign Up
+                </MotionLink>
+              </div>
             </div>
+
+            <div className="mt-8 rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-5 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.3em] text-[var(--accent)]">Operator partner</p>
+                  <h2 className="mt-2 text-xl font-semibold text-[var(--text)]">
+                    Manage routes, schedules, and bookings in one place.
+                  </h2>
+                  <p className="mt-2 max-w-xl text-sm text-[var(--text-muted)]">
+                    The operator portal gives your company a streamlined dashboard for route planning, seat inventory, and booking analytics.
+                  </p>
+                </div>
+                <MotionAnchor
+                  href={companyLoginUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center justify-center rounded-full bg-[var(--accent)] px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5"
+                >
+                  Open Operator Portal
+                </MotionAnchor>
+              </div>
+            </div>
+
+            {isMenuOpen && (
+              <div className="mt-3 flex flex-col gap-3 rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/95 p-4 shadow-[0_20px_60px_rgba(0,0,0,0.25)] md:hidden">
+                <MotionLink
+                  to="/login"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  Login
+                </MotionLink>
+                <MotionAnchor
+                  href={companyLoginUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-5 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  Operator Portal
+                </MotionAnchor>
+                <MotionLink
+                  to="/signup"
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full bg-gradient-to-r from-[#1d9bf0] via-[#3bb2ff] to-[#1d9bf0] px-5 py-3 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(29,155,240,0.45)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_46px_rgba(29,155,240,0.55)]"
+                >
+                  Sign Up
+                </MotionLink>
+              </div>
+            )}
             <div className="mt-10 grid gap-4 text-xs uppercase tracking-[0.3em] text-[var(--text-muted)] sm:grid-cols-3">
               <div className="rounded-2xl border border-[var(--border)] bg-[var(--bg-card)]/70 px-4 py-3 text-center">
                 Trusted by professional travelers
@@ -294,6 +385,72 @@ export default function LandingPage({ theme, onToggleTheme }) {
               </motion.div>
             )
           })}
+        </div>
+      </motion.section>
+
+      <motion.section className="mx-auto w-full max-w-6xl px-4 pb-24" {...fadeUp}>
+        <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/90 p-8 shadow-[0_20px_60px_rgba(0,0,0,0.25)]">
+          <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] items-center">
+            <div>
+              <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+                For operators
+              </p>
+              <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">
+                Operator tools for route partners and fleet managers
+              </h2>
+              <p className="mt-4 max-w-3xl text-sm text-[var(--text-muted)] sm:text-base">
+                Manage availability, set schedules, review bookings, and keep your
+                fleet running smoothly with a dedicated dashboard built for
+                operators.
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <MotionAnchor
+                  href={companyLoginUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-white shadow-[0_16px_36px_rgba(29,155,240,0.45)] transition hover:-translate-y-0.5 hover:shadow-[0_22px_46px_rgba(29,155,240,0.55)]"
+                >
+                  Operator Login
+                </MotionAnchor>
+                <MotionAnchor
+                  href="#features"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/70 px-6 py-3 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+                >
+                  Learn more
+                </MotionAnchor>
+              </div>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-6 text-[var(--text-muted)] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                <h3 className="text-lg font-semibold text-[var(--text)]">Fleet & Schedule Control</h3>
+                <p className="mt-3 text-sm leading-relaxed">
+                  Update routes, assignments, and bus availability from one place.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-6 text-[var(--text-muted)] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                <h3 className="text-lg font-semibold text-[var(--text)]">Live Booking Insights</h3>
+                <p className="mt-3 text-sm leading-relaxed">
+                  Track reservations, seat fills, and revenue trends in real time.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-6 text-[var(--text-muted)] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                <h3 className="text-lg font-semibold text-[var(--text)]">Operator Performance</h3>
+                <p className="mt-3 text-sm leading-relaxed">
+                  Monitor on-time rates, cancellations, and consistency across trips.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[var(--border)] bg-[var(--bg-elev)] p-6 text-[var(--text-muted)] shadow-[0_10px_30px_rgba(0,0,0,0.08)]">
+                <h3 className="text-lg font-semibold text-[var(--text)]">Trusted Partner Network</h3>
+                <p className="mt-3 text-sm leading-relaxed">
+                  Join the platform and get access to more cross-border travelers.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </motion.section>
 

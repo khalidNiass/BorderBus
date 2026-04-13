@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import Sidebar from '../components/Sidebar';
+import DashboardLayout from '../components/DashboardLayout';
 import '../styles/Settings.css';
 
 const Settings = () => {
@@ -69,10 +69,8 @@ const Settings = () => {
   };
 
   return (
-    <div className="dashboard-layout">
-      <Sidebar />
-      <div className="dashboard-main">
-        <div className="settings-container">
+    <DashboardLayout>
+      <div className="settings-container">
           <div className="settings-header">
             <div className="settings-title-section">
               <h2 className="page-title">Settings</h2>
@@ -340,9 +338,8 @@ const Settings = () => {
               </form>
             </div>
           </div>
-        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

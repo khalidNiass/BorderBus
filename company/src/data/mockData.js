@@ -15,6 +15,28 @@ export const initialData = {
     address: '123 Main Street, City, Country',
     registrationNumber: 'REG-2024-001'
   },
+  companyProfile: {
+    coverTitle: 'Atlantic Express cover',
+    initials: 'AT',
+    name: 'Atlantic Express',
+    rating: 4.6,
+    ratingCount: 1240,
+    about:
+      'Premium coastal routes with modern coaches, Wi-Fi, and reliable departures across West Africa.',
+    location: 'Dakar, Senegal',
+    phone: '+221 555 0131',
+    email: 'support@atlanticexpress.com',
+    onTime: 94,
+    avgPrice: 32,
+    routes: 18,
+    support: '24/7 Border Support',
+    tripsCompleted: 48210,
+    address: 'Terminal 4, Port Autonome de Dakar, Senegal',
+    routeHighlights: [
+      { from: 'Dakar', to: 'Banjul', duration: '4h 45m', price: 32 }
+    ],
+    serviceArea: ['Coastal', 'Regional']
+  },
 
   // Buses
   buses: [

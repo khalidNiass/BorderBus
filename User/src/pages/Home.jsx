@@ -13,6 +13,37 @@ function Home() {
     seats: 10,
   })
 
+  const popularRoutes = [
+    {
+      id: 1,
+      route: 'Dakar → Bamako',
+      duration: '10h 25m',
+      price: '$48',
+      seats: '18 left',
+    },
+    {
+      id: 2,
+      route: 'Casablanca → Tangier',
+      duration: '5h 10m',
+      price: '$34',
+      seats: '12 left',
+    },
+    {
+      id: 3,
+      route: 'Abidjan → Accra',
+      duration: '7h 45m',
+      price: '$55',
+      seats: '9 left',
+    },
+    {
+      id: 4,
+      route: 'Lagos → Cotonou',
+      duration: '8h 10m',
+      price: '$42',
+      seats: '21 left',
+    },
+  ]
+
   const filteredBuses = useMemo(() => {
     const matchesTime = (time) => {
       if (filters.time === 'any') return true
@@ -60,6 +91,40 @@ function Home() {
               <span className="muted">No printing needed</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="mb-8">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold">Popular routes to book now</h2>
+            <p className="text-sm text-[var(--text-muted)]">
+              Top-rated cross-border trips with the most available seats.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => navigate('/search')}
+            className="rounded-full border border-[var(--border)] bg-[var(--bg-card)]/80 px-5 py-2 text-sm font-semibold text-[var(--text)] transition hover:border-[var(--accent)] hover:text-[var(--accent)]"
+          >
+            Explore all routes
+          </button>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {popularRoutes.map((route) => (
+            <div
+              key={route.id}
+              className="rounded-3xl border border-[var(--border)] bg-[var(--bg-card)]/80 p-5 shadow-[0_20px_40px_rgba(0,0,0,0.12)]"
+            >
+              <h3 className="text-lg font-semibold text-[var(--text)]">{route.route}</h3>
+              <p className="mt-2 text-sm text-[var(--text-muted)]">{route.duration}</p>
+              <div className="mt-4 flex items-center justify-between gap-4 text-sm">
+                <span className="text-[var(--text)] font-semibold">{route.price}</span>
+                <span className="rounded-full bg-[var(--border)]/90 px-3 py-1 text-[var(--text-muted)]">{route.seats}</span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

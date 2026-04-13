@@ -376,7 +376,7 @@ body {
 }
 
 /* Responsive Design Fixes */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .dashboard-main {
     margin-left: 0;
   }

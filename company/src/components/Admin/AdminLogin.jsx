@@ -6,8 +6,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Mail, Lock, Moon, Sun, Shield, User, Key, Bus } from 'lucide-react';
+import { Mail, Lock, Moon, Sun, Bus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import heroImage from '../../assets/bus.jfif';
 import './AdminAuth.css';
 
 function AdminLogin() {
@@ -49,198 +50,182 @@ function AdminLogin() {
   };
 
   return (
-    <motion.div
-      className="admin-auth-container"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      <motion.div
-        className="admin-auth-card"
-        initial={{ scale: 0.95, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
-      >
-        <div className="admin-auth-header">
-          <motion.h1
-            initial={{ y: -10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.4 }}
-          >
-            <Bus size={32} className="header-bus-icon" /> BorderBus Admin
-          </motion.h1>
-          <motion.p
-            className="text-muted"
-            initial={{ y: 10, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.4 }}
-          >
-            Company Management Dashboard
-          </motion.p>
+    <motion.div className="admin-auth-page">
+      <div
+        className="admin-auth-page-bg"
+        style={{
+          backgroundImage: `url(${heroImage})`,
+        }}
+      />
+      <header className="admin-auth-navbar">
+        <div className="admin-auth-brand">
+          <Bus size={24} className="header-bus-icon" />
+          <span>BorderBus Company Login</span>
         </div>
-
-        {error && (
-          <motion.div
-            className="error-message"
-            initial={{ opacity: 0, x: -10 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -10 }}
-          >
-            {error}
-          </motion.div>
-        )}
-
-        <form onSubmit={handleSubmit} className="admin-auth-form">
-          <motion.div
-            className="form-group"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.4 }}
-          >
-            <label htmlFor="email">Email Address</label>
-            <div className="form-field">
+        <motion.button
+          type="button"
+          className="theme-toggle nav-theme-toggle"
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+        >
+          {theme === 'dark' ? (
+            <>
               <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
-                <Mail size={18} strokeWidth={2} className="icon-accent" />
+                <Sun size={16} />
               </motion.div>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="admin@company.com"
-                required
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            className="form-group"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.45, duration: 0.4 }}
-          >
-            <label htmlFor="password">Password</label>
-            <div className="form-field">
+              <span>Light Mode</span>
+            </>
+          ) : (
+            <>
               <motion.div
-                whileHover={{ scale: 1.1, rotate: -5 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                initial={{ rotate: 0 }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
-                <Lock size={18} strokeWidth={2} className="icon-accent" />
+                <Moon size={16} />
               </motion.div>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-              />
+              <span>Dark Mode</span>
+            </>
+          )}
+        </motion.button>
+      </header>
+      <div className="admin-auth-container">
+        <motion.div
+          className="admin-auth-card admin-auth-hero-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
+        >
+          <div className="admin-auth-hero">
+            <span className="auth-badge">BorderBus</span>
+            <h1>Welcome back</h1>
+            <p className="auth-subtitle">
+              Sign in to manage routes, schedules, and company bookings.
+            </p>
+
+            <div className="auth-hero-features">
+              <div className="auth-feature-card">
+                <span>Verified operators</span>
+              </div>
+              <div className="auth-feature-card">
+                <span>Live seat inventory</span>
+              </div>
+              <div className="auth-feature-card">
+                <span>Route analytics</span>
+              </div>
+              <div className="auth-feature-card">
+                <span>Secure dashboard access</span>
+              </div>
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-          <motion.button
-            type="submit"
-            className="primary-button full-width"
-            whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(29, 155, 240, 0.3)' }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 10 }}
-          >
-            Sign In to Dashboard
-          </motion.button>
-        </form>
-
-        <div className="admin-auth-footer">
-          <motion.button
-            type="button"
-            className="theme-toggle"
-            onClick={toggleTheme}
-            aria-label="Toggle theme"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 10 }}
-          >
-            {theme === 'dark' ? (
-              <>
-                <motion.div
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
-                >
-                  <Sun size={16} />
-                </motion.div>
-                <span>Light Mode</span>
-              </>
-            ) : (
-              <>
-                <motion.div
-                  initial={{ rotate: 0 }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 0.5, ease: 'easeInOut' }}
-                >
-                  <Moon size={16} />
-                </motion.div>
-                <span>Dark Mode</span>
-              </>
-            )}
-          </motion.button>
-          
-          {/* Demo Credentials Card */}
-          <motion.div
-            className="demo-credentials-card"
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65, duration: 0.5 }}
-            whileHover={{ y: -4 }}
-          >
-            <motion.div
-              className="demo-card-header"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.75 }}
+        <motion.div
+          className="admin-auth-card admin-auth-form-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: 'easeOut', delay: 0.1 }}
+        >
+          <div className="admin-auth-header">
+            <motion.h1
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.4 }}
             >
-              <Shield size={16} strokeWidth={2} className="demo-icon" />
-              <span className="demo-label">Demo Account</span>
+              <Bus size={28} className="header-bus-icon" /> Company Login
+            </motion.h1>
+            <motion.p
+              className="text-muted"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+            >
+              Secure access for your BorderBus company dashboard.
+            </motion.p>
+          </div>
+
+          {error && (
+            <motion.div
+              className="error-message"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+            >
+              {error}
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit} className="admin-auth-form">
+            <motion.div
+              className="form-group"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.35, duration: 0.4 }}
+            >
+              <label htmlFor="email">Email Address</label>
+              <div className="form-field">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                >
+                  <Mail size={18} strokeWidth={2} className="icon-accent" />
+                </motion.div>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="admin@company.com"
+                  required
+                />
+              </div>
             </motion.div>
 
-            <div className="demo-credentials-grid">
-              <motion.div
-                className="credential-item"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8 }}
-                whileHover={{ x: 4 }}
-              >
-                <div className="credential-icon">
-                  <User size={14} strokeWidth={2} />
-                </div>
-                <div className="credential-content">
-                  <span className="credential-label">Email</span>
-                  <code className="credential-value">admin@borderbus.com</code>
-                </div>
-              </motion.div>
+            <motion.div
+              className="form-group"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.45, duration: 0.4 }}
+            >
+              <label htmlFor="password">Password</label>
+              <div className="form-field">
+                <motion.div
+                  whileHover={{ scale: 1.1, rotate: -5 }}
+                  transition={{ type: 'spring', stiffness: 300, damping: 15 }}
+                >
+                  <Lock size={18} strokeWidth={2} className="icon-accent" />
+                </motion.div>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
+              </div>
+            </motion.div>
 
-              <motion.div
-                className="credential-item"
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.85 }}
-                whileHover={{ x: 4 }}
-              >
-                <div className="credential-icon">
-                  <Key size={14} strokeWidth={2} />
-                </div>
-                <div className="credential-content">
-                  <span className="credential-label">Password</span>
-                  <code className="credential-value">any password</code>
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        </div>
-      </motion.div>
+            <motion.button
+              type="submit"
+              className="primary-button full-width"
+              whileHover={{ scale: 1.02, boxShadow: '0 10px 30px rgba(29, 155, 240, 0.3)' }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 10 }}
+            >
+              Sign In to Dashboard
+            </motion.button>
+          </form>
+
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

@@ -21,6 +21,8 @@ import Schedules from './pages/Schedules';
 import Bookings from './pages/Bookings';
 import Customers from './pages/Customers';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 
 // Styles
 import './styles/global.css';
@@ -101,6 +103,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Settings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile/edit"
+            element={
+              <ProtectedRoute>
+                <EditProfile />
               </ProtectedRoute>
             }
           />
